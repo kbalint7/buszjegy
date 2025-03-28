@@ -41,6 +41,14 @@ public class MainActivity extends AppCompatActivity {
         Log.i(LOG_TAG, "Bejelentkezett: " + userName + ", jelszó: " + password);
     }
 
+    public void loginAsGuest(View view) {
+
+    }
+
+    public void loginWithGoogle(View view) {
+
+    }
+
     public void register(View view) {
         Intent intent = new Intent(this, RegisterActivity.class);
         intent.putExtra("SECRET_KEY", SECRET_KEY);

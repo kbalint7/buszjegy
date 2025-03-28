@@ -4,4 +4,6 @@
     <string name="password">Jelszó</string>
     <string name="login">Bejelentkezés</string>
     <string name="register">Regisztráció</string>
+    <string name="loginAsGuest">Bejelentkezés vendégként</string>
+    <string name="loginWithGoogle">Bejelentkezés Google fiókkal</string>
 </resources>
