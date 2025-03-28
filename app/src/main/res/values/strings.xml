@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">Buszjegy lefoglaló</string>
+    <string name="userName">Felhasználónév</string>
+    <string name="password">Jelszó</string>
+    <string name="login">Bejelentkezés</string>
+    <string name="register">Regisztráció</string>
+</resources>
