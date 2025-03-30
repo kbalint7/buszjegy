@@ -2,8 +2,12 @@ package com.mobilalk.buszjegy;
 
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
@@ -33,6 +37,27 @@ public class TicketListActivity extends AppCompatActivity {
         } else {
             Log.d(LOG_TAG, "Could not authenticate user!");
             finish();
+        }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.ticket_list_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        int itemId = item.getItemId();
+        if (itemId == R.id.search) {
+            return true;
+        } else if (itemId == R.id.logout) {
+            FirebaseAuth.getInstance().signOut();
+            Toast.makeText(this, "Sikeres kijelentkezés!", Toast.LENGTH_SHORT).show();
+            finish();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
     }
 }

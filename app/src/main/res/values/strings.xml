@@ -9,4 +9,6 @@
     <string name="back">Vissza</string>
     <string name="loginTitle">Jelentkezz be a Buszjegy lefoglaló alkalmazás használatához!</string>
     <string name="registerTitle">Kérlek regisztrálj!</string>
+    <string name="search">Keresés</string>
+    <string name="logout">Kijelentkezés</string>
 </resources>
