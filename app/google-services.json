@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1054965402794",
+    "project_id": "mobilalk-98a87",
+    "storage_bucket": "mobilalk-98a87.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1054965402794:android:9e6aae14fdeae09a9f14d3",
+        "android_client_info": {
+          "package_name": "com.mobilalk.buszjegy"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyD1LFuEYBkdD1ejs-7DFv3Y0Mr-tZAp6i4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
