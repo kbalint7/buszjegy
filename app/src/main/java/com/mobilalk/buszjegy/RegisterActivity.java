@@ -90,5 +90,6 @@ public class RegisterActivity extends AppCompatActivity {
     public void startShopping() {
         Intent intent = new Intent(this, TicketListActivity.class);
         startActivity(intent);
+        finish();
     }
 }

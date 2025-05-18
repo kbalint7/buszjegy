@@ -11,4 +11,40 @@
     <string name="registerTitle">Kérlek regisztrálj!</string>
     <string name="search">Keresés</string>
     <string name="logout">Kijelentkezés</string>
+    <string name="name">Termék neve</string>
+    <string name="description">Termék leírása</string>
+    <string name="buy">Lefoglal</string>
+    <string name="price">Termék ára</string>
+    <string name="ownedTickets">Megvásárolt jegyek</string>
+    <string name="browseTickets">Jegyek böngészése</string>
+    <string name="delete">Törlés</string>
+    <string name="bought">Lefoglalva</string>
+
+    <string-array name="ticket_item_names">
+        <item>Vármegyei bérlet</item>
+        <item>Országos bérlet</item>
+        <item>Egyszeri menetjegy</item>
+        <item>Városi bérlet</item>
+        <item>Diák havi bérlet</item>
+        <item>Nyugdíjas kedvezményes jegy</item>
+    </string-array>
+
+    <string-array name="ticket_item_descriptions">
+        <item>Havi érvényességű bérlet egy adott vármegyén belüli helyközi buszjáratokhoz.</item>
+        <item>Havi érvényességű bérlet az ország összes helyközi buszjáratára.</item>
+        <item>Egyszeri utazásra szóló jegy, érvényes egy kiválasztott járaton.</item>
+        <item>Helyi közlekedésre (pl. városi buszok) használható havi bérlet egy adott városon belül.</item>
+        <item>Teljes idejű tanulóknak szóló havi bérlet kedvezményes áron, országos érvényességgel.</item>
+        <item>Nyugdíjasok számára elérhető egyszeri menetjegy 50% kedvezménnyel, helyközi járatokra.</item>
+    </string-array>
+
+    <string-array name="ticket_item_prices">
+        <item>2 490 Ft</item>
+        <item>5 490 Ft</item>
+        <item>990 Ft</item>
+        <item>1 290 Ft</item>
+        <item>2 990 Ft</item>
+        <item>495 Ft</item>
+    </string-array>
+
 </resources>

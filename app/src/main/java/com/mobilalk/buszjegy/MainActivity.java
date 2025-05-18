@@ -71,6 +71,7 @@ public class MainActivity extends AppCompatActivity {
     public void startShopping() {
         Intent intent = new Intent(this, TicketListActivity.class);
         startActivity(intent);
+        finish();
     }
 
     public void register(View view) {

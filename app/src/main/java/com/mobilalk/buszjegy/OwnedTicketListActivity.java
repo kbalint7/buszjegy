@@ -16,23 +16,22 @@ import androidx.core.view.WindowInsetsCompat;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.CollectionReference;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
+import java.util.List;
 
-public class TicketListActivity extends AppCompatActivity {
-    private static final String LOG_TAG = TicketListActivity.class.getName();
+public class OwnedTicketListActivity extends AppCompatActivity {
+    private static final String LOG_TAG = OwnedTicketListActivity.class.getName();
     private FirebaseUser user;
 
     private RecyclerView mRecyclerView;
     private ArrayList<TicketItem> mItemList;
-    private TicketItemAdapter mAdapter;
+    private OwnedTicketItemAdapter mAdapter;
 
     private int gridNumber = 1;
 
@@ -44,7 +43,7 @@ public class TicketListActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_ticket_list);
+        setContentView(R.layout.activity_owned_ticket_list);
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
@@ -63,53 +62,61 @@ public class TicketListActivity extends AppCompatActivity {
         mRecyclerView.setLayoutManager(new GridLayoutManager(this, gridNumber));
         mItemList = new ArrayList<>();
 
-        mAdapter = new TicketItemAdapter(this, mItemList);
+        mAdapter = new OwnedTicketItemAdapter(this, mItemList);
         mRecyclerView.setAdapter(mAdapter);
 
         mFirestore = FirebaseFirestore.getInstance();
         mItems = mFirestore.collection("Items");
         mOwnerships = mFirestore.collection("Ownerships");
 
-        initializeData();
         queryData();
     }
 
     private void queryData() {
         mItemList.clear();
 
-        mItems.orderBy("title").limit(10).get().addOnSuccessListener(queryDocumentSnapshots -> {
-            for (QueryDocumentSnapshot document : queryDocumentSnapshots) {
-                TicketItem item = document.toObject(TicketItem.class);
-                item._setId(document.getId());
-                mItemList.add(item);
-            }
+        mOwnerships
+            .whereEqualTo("email", user.getEmail())
+            .get()
+            .addOnSuccessListener(ownershipSnapshots -> {
+                List<String> ownedItemIds = new ArrayList<>();
 
-            mAdapter.notifyDataSetChanged();
-        });
-    }
+                for (QueryDocumentSnapshot ownership : ownershipSnapshots) {
+                    String itemId = ownership.getString("itemId");
+                    if (itemId != null) {
+                        ownedItemIds.add(itemId);
+                    }
+                }
 
-    private void initializeData() {
-        String[] itemsList = getResources().getStringArray(R.array.ticket_item_names);
-        String[] itemsDescription = getResources().getStringArray(R.array.ticket_item_descriptions);
-        String[] itemsPrice = getResources().getStringArray(R.array.ticket_item_prices);
+                if (ownedItemIds.isEmpty()) {
+                    mAdapter.notifyDataSetChanged();
+                    return;
+                }
 
-        for (int i = 0; i < itemsList.length; i++) {
-            mItems.add(new TicketItem(itemsList[i], itemsDescription[i], itemsPrice[i]));
-        }
+                for (String itemId : ownedItemIds) {
+                    mItems.document(itemId).get().addOnSuccessListener(documentSnapshot -> {
+                        if (documentSnapshot.exists()) {
+                            TicketItem item = documentSnapshot.toObject(TicketItem.class);
+                            item._setId(documentSnapshot.getId());
+                            mItemList.add(item);
+                            mAdapter.notifyDataSetChanged();
+                        }
+                    });
+                }
+            });
     }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.ticket_list_menu, menu);
+        getMenuInflater().inflate(R.menu.owned_ticket_list_menu, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(@NonNull MenuItem item) {
         int itemId = item.getItemId();
-        if (itemId == R.id.ownedTickets) {
-            Intent intent = new Intent(this, OwnedTicketListActivity.class);
-            startActivity(intent);
+        if (itemId == R.id.browseTickets) {
+            finish();
             return true;
         } else if (itemId == R.id.logout) {
             FirebaseAuth.getInstance().signOut();
@@ -123,7 +130,19 @@ public class TicketListActivity extends AppCompatActivity {
         }
     }
 
-    public void buyItem(TicketItem currentItem) {
-        mOwnerships.add(new Ownership(user.getEmail(), currentItem._getId()));
+    public void deleteItem(TicketItem currentItem) {
+        mOwnerships
+            .whereEqualTo("email", user.getEmail())
+            .whereEqualTo("itemId", currentItem._getId())
+            .get()
+            .addOnSuccessListener(querySnapshots -> {
+                for (QueryDocumentSnapshot doc : querySnapshots) {
+                    mFirestore.collection("Ownerships")
+                            .document(doc.getId())
+                            .delete();
+                    queryData();
+                    break;
+                }
+            });
     }
 }
