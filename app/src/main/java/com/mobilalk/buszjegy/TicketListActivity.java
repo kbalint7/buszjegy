@@ -125,5 +125,6 @@ public class TicketListActivity extends AppCompatActivity {
 
     public void buyItem(TicketItem currentItem) {
         mOwnerships.add(new Ownership(user.getEmail(), currentItem._getId()));
+        Toast.makeText(this, "Sikeres lefoglalás!", Toast.LENGTH_SHORT).show();
     }
 }
