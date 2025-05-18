@@ -70,7 +70,7 @@ public class TicketListActivity extends AppCompatActivity {
         mItems = mFirestore.collection("Items");
         mOwnerships = mFirestore.collection("Ownerships");
 
-        initializeData();
+        //initializeData();
         queryData();
     }
 
